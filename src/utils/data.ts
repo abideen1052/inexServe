@@ -53,4 +53,59 @@ export const servicesData = [
     isAvailable: true,
     rating: 4.5,
   },
+  {
+    id: '6',
+    name: 'Personal Training',
+    description:
+      'One-on-one fitness training sessions with certified personal trainers.',
+    icon: 'trainer',
+    price: 3000,
+    duration: 'Monthly',
+    isAvailable: true,
+    rating: 4.7,
+  },
+  {
+    id: '7',
+    name: 'Spa & Wellness',
+    description:
+      'Relaxing spa therapies including massage, steam bath, and sauna.',
+    icon: 'spa',
+    price: 2500,
+    duration: 'Monthly',
+    isAvailable: true,
+    rating: 4.6,
+  },
+  {
+    id: '8',
+    name: 'Kids Activity Zone',
+    description:
+      'Fun and safe play area with supervised activities for children.',
+    icon: 'kids',
+    price: 700,
+    duration: 'Monthly',
+    isAvailable: false,
+    rating: 4.3,
+  },
+  {
+    id: '9',
+    name: 'Food Court Access',
+    description:
+      'Access to club cafeteria and food court with member discounts.',
+    icon: 'food',
+    price: 500,
+    duration: 'Monthly',
+    isAvailable: true,
+    rating: 4.1,
+  },
+  {
+    id: '10',
+    name: 'Tennis Coaching',
+    description:
+      'Professional tennis coaching sessions for beginners and advanced players.',
+    icon: 'tennis',
+    price: 1800,
+    duration: 'Monthly',
+    isAvailable: true,
+    rating: 4.5,
+  },
 ];

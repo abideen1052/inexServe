@@ -19,6 +19,7 @@ export default function BottomNavigation() {
       screenOptions={({ route }) => ({
         tabBarIcon: () => renderTabBarIcon(route.name),
         headerShown: false,
+        tabBarHideOnKeyboard: true,
         tabBarShowLabel: false,
         tabBarStyle: {
           height: 55,

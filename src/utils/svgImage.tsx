@@ -1,6 +1,6 @@
 import { SvgXml } from 'react-native-svg';
 
-import { home, gallery, share, profile } from '../resources/svg';
+import { home, gallery, share, profile, search } from '../resources/svg';
 import { IconsType } from '../types/iconsType';
 
 export const IMAGES = {
@@ -8,6 +8,7 @@ export const IMAGES = {
   gallery,
   share,
   profile,
+  search,
 };
 
 type Props = {
