@@ -5,6 +5,7 @@ export const servicesData = [
     description:
       'Fully equipped gym with personal trainers and modern fitness equipment.',
     icon: 'dumbbell',
+    imageUrl: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b',
     price: 1500,
     duration: 'Monthly',
     isAvailable: true,
@@ -16,6 +17,7 @@ export const servicesData = [
     description:
       'Olympic-size swimming pool with lifeguard and trainer support.',
     icon: 'swimmer',
+    imageUrl: 'https://images.unsplash.com/photo-1504309092620-4d0ec726efa4',
     price: 1200,
     duration: 'Monthly',
     isAvailable: true,
@@ -26,6 +28,7 @@ export const servicesData = [
     name: 'Indoor Sports',
     description: 'Access to badminton, table tennis, and squash courts.',
     icon: 'badminton',
+    imageUrl: 'https://images.unsplash.com/photo-1547347298-4074fc3086f0',
     price: 1000,
     duration: 'Monthly',
     isAvailable: false,
@@ -37,6 +40,7 @@ export const servicesData = [
     description:
       'Daily yoga and meditation sessions guided by certified instructors.',
     icon: 'yoga',
+    imageUrl: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597',
     price: 800,
     duration: 'Monthly',
     isAvailable: true,
@@ -48,6 +52,7 @@ export const servicesData = [
     description:
       'Spacious hall for private events, parties, and corporate meetings.',
     icon: 'calendar',
+    imageUrl: 'https://images.unsplash.com/photo-1515169067865-5387ec356754',
     price: 5000,
     duration: 'Per Event',
     isAvailable: true,
@@ -59,6 +64,7 @@ export const servicesData = [
     description:
       'One-on-one fitness training sessions with certified personal trainers.',
     icon: 'trainer',
+    imageUrl: 'https://images.unsplash.com/photo-1579758629938-03608ccdbaba',
     price: 3000,
     duration: 'Monthly',
     isAvailable: true,
@@ -70,6 +76,7 @@ export const servicesData = [
     description:
       'Relaxing spa therapies including massage, steam bath, and sauna.',
     icon: 'spa',
+    imageUrl: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874',
     price: 2500,
     duration: 'Monthly',
     isAvailable: true,
@@ -81,6 +88,7 @@ export const servicesData = [
     description:
       'Fun and safe play area with supervised activities for children.',
     icon: 'kids',
+    imageUrl: 'https://images.unsplash.com/photo-1600880292089-90a7e086ee0c',
     price: 700,
     duration: 'Monthly',
     isAvailable: false,
@@ -92,6 +100,7 @@ export const servicesData = [
     description:
       'Access to club cafeteria and food court with member discounts.',
     icon: 'food',
+    imageUrl: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5',
     price: 500,
     duration: 'Monthly',
     isAvailable: true,
@@ -103,6 +112,7 @@ export const servicesData = [
     description:
       'Professional tennis coaching sessions for beginners and advanced players.',
     icon: 'tennis',
+    imageUrl: 'https://images.unsplash.com/photo-1521412644187-c49fa049e84d',
     price: 1800,
     duration: 'Monthly',
     isAvailable: true,
