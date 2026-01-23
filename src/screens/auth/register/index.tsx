@@ -17,6 +17,7 @@ import {
   NameValid,
   PasswordValid,
 } from '../../../utils/validations';
+import Toast from '../../../components/toast';
 
 const RegisterScreen = ({ navigation }: { navigation: any }) => {
   const insets = useSafeAreaInsets();
@@ -28,6 +29,11 @@ const RegisterScreen = ({ navigation }: { navigation: any }) => {
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [toast, setToast] = useState({
+    visible: false,
+    message: '',
+    type: '',
+  });
 
   const handleRegister = async () => {
     const nameValidation = NameValid(name);
@@ -55,9 +61,15 @@ const RegisterScreen = ({ navigation }: { navigation: any }) => {
 
     await saveLoggedInUser({ id, name, email });
     await saveIsLoggedIn(true);
-    navigation.navigate('BottomNavigation');
-
-    setIsLoading(false);
+    setToast({
+      visible: true,
+      message: 'Register successful',
+      type: 'success',
+    });
+    setTimeout(() => {
+      navigation.navigate('BottomNavigation');
+      setIsLoading(false);
+    }, 2000);
   };
   return (
     <Pressable
@@ -118,6 +130,10 @@ const RegisterScreen = ({ navigation }: { navigation: any }) => {
           Login
         </Text>
       </Text>
+      <Toast
+        toast={toast}
+        onClose={() => setToast({ ...toast, visible: false })}
+      />
     </Pressable>
   );
 };

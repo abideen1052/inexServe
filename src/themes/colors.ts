@@ -10,6 +10,9 @@ const colors = {
   blue: '#007AFF',
   green: '#4CAF50',
   borderColor: '#8391A1',
+  greenDark: '#192525',
+  toastBackground: '#333333',
+  toastText: '#FFFFFF',
 };
 
 export default colors;

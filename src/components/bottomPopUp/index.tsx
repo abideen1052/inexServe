@@ -20,6 +20,7 @@ import {
 import CustomButton from '../customButton';
 import InputField from '../inputField';
 import { NameValid, EmailValid } from '../../utils/validations';
+import Toast from '../toast';
 
 interface Props {
   isVisible: boolean;
@@ -35,23 +36,42 @@ const BottomPopUp = ({ isVisible, onClose, item }: Props) => {
   const [referEmail, setReferEmail] = useState('');
   const [nameError, setNameError] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [toast, setToast] = useState({
+    visible: false,
+    message: '',
+    type: '',
+  });
 
   useEffect(() => {
-    if (item?.id) {
+    if (isVisible) {
       setHasError(false);
       setImageLoading(false);
       setIsReferring(false);
       setReferName('');
       setReferEmail('');
+      setNameError('');
+      setEmailError('');
+      setToast({
+        visible: false,
+        message: '',
+        type: '',
+      });
     }
-  }, [item?.id, isVisible]);
+  }, [isVisible, item?.id]);
 
   if (!item) return null;
 
   const handleRequest = async () => {
     if (item) {
       await addRequestedService(item);
-      onClose();
+      setToast({
+        visible: true,
+        message: 'Service requested successfully',
+        type: 'success',
+      });
+      setTimeout(() => {
+        onClose();
+      }, 2000);
     }
   };
 
@@ -73,8 +93,16 @@ const BottomPopUp = ({ isVisible, onClose, item }: Props) => {
       ...item,
       referredName: referName,
       referredEmail: referEmail,
+      referralId: '',
     });
-    onClose();
+    setToast({
+      visible: true,
+      message: 'Service referred successfully',
+      type: 'success',
+    });
+    setTimeout(() => {
+      onClose();
+    }, 2000);
   };
 
   return (
@@ -82,7 +110,14 @@ const BottomPopUp = ({ isVisible, onClose, item }: Props) => {
       visible={isVisible}
       transparent
       animationType="slide"
-      onRequestClose={onClose}
+      onRequestClose={() => {
+        setToast({
+          visible: false,
+          message: '',
+          type: '',
+        });
+        onClose();
+      }}
     >
       <TouchableWithoutFeedback onPress={onClose}>
         <View style={styles.overlay}>
@@ -168,7 +203,7 @@ const BottomPopUp = ({ isVisible, onClose, item }: Props) => {
                   <View style={styles.buttonContainer}>
                     <TouchableOpacity
                       style={[styles.button, styles.requestButton]}
-                      onPress={handleRequest}
+                      onPress={() => handleRequest()}
                     >
                       <Text style={styles.requestButtonText}>Request</Text>
                     </TouchableOpacity>
@@ -186,6 +221,10 @@ const BottomPopUp = ({ isVisible, onClose, item }: Props) => {
           </TouchableWithoutFeedback>
         </View>
       </TouchableWithoutFeedback>
+      <Toast
+        toast={toast}
+        onClose={() => setToast({ ...toast, visible: false })}
+      />
     </Modal>
   );
 };

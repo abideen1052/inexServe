@@ -1,1 +1,8 @@
-export type IconsType = 'home' | 'gallery' | 'share' | 'profile' | 'search';
+export type IconsType =
+  | 'home'
+  | 'gallery'
+  | 'share'
+  | 'profile'
+  | 'search'
+  | 'sussesToastClose'
+  | 'errorToastClose';
