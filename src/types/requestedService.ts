@@ -8,4 +8,5 @@ export interface RequestedService {
   duration: string;
   isAvailable: boolean;
   rating: number;
+  userId?: string;
 }

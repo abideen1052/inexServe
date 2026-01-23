@@ -62,6 +62,7 @@ export const validateUserLogin = async (
 
     if (matchedUser) {
       return {
+        id: matchedUser.id,
         name: matchedUser.name,
         email: matchedUser.email,
       };

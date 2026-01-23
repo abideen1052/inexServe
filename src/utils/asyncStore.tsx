@@ -88,11 +88,16 @@ export const addRequestedService = async (
     const stored = await AsyncStorage.getItem(REQUESTED_SERVICES_KEY);
     const services: RequestedService[] = stored ? JSON.parse(stored) : [];
 
-    // ❗ Prevent duplicate requests
-    const alreadyExists = services.some(item => item.id === service.id);
+    const user = await getLoggedInUser();
+    if (!user) return;
+
+    // ❗ Prevent duplicate requests for this user
+    const alreadyExists = services.some(
+      item => item.id === service.id && item.userId === user.id,
+    );
 
     if (!alreadyExists) {
-      services.push(service);
+      services.push({ ...service, userId: user.id });
 
       await AsyncStorage.setItem(
         REQUESTED_SERVICES_KEY,
@@ -106,8 +111,12 @@ export const addRequestedService = async (
 
 export const getRequestedServices = async (): Promise<RequestedService[]> => {
   try {
+    const user = await getLoggedInUser();
+    if (!user) return [];
+
     const stored = await AsyncStorage.getItem(REQUESTED_SERVICES_KEY);
-    return stored ? JSON.parse(stored) : [];
+    const services: RequestedService[] = stored ? JSON.parse(stored) : [];
+    return services.filter(item => item.userId === user.id);
   } catch (error) {
     console.log('getRequestedServicesError', error);
     return [];
@@ -140,9 +149,12 @@ export const addReferredService = async (
     const stored = await AsyncStorage.getItem(REFERRED_SERVICES_KEY);
     const services: ReferredService[] = stored ? JSON.parse(stored) : [];
 
+    const user = await getLoggedInUser();
+    if (!user) return;
+
     const referralId =
       Date.now().toString() + Math.random().toString(36).substring(7);
-    services.push({ ...service, referralId });
+    services.push({ ...service, referralId, userId: user.id });
 
     await AsyncStorage.setItem(REFERRED_SERVICES_KEY, JSON.stringify(services));
   } catch (error) {
@@ -152,8 +164,12 @@ export const addReferredService = async (
 
 export const getReferredServices = async (): Promise<ReferredService[]> => {
   try {
+    const user = await getLoggedInUser();
+    if (!user) return [];
+
     const stored = await AsyncStorage.getItem(REFERRED_SERVICES_KEY);
-    return stored ? JSON.parse(stored) : [];
+    const services: ReferredService[] = stored ? JSON.parse(stored) : [];
+    return services.filter(item => item.userId === user.id);
   } catch (error) {
     console.log('getReferredServicesError', error);
     return [];

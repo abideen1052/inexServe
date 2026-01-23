@@ -45,14 +45,15 @@ const RegisterScreen = ({ navigation }: { navigation: any }) => {
     setPasswordError('');
     setIsLoading(true);
 
+    const id = Date.now().toString();
     await saveRegisteredUser({
-      id: Date.now().toString(),
+      id,
       name,
       email,
       password,
     });
 
-    await saveLoggedInUser({ name, email });
+    await saveLoggedInUser({ id, name, email });
     await saveIsLoggedIn(true);
     navigation.navigate('BottomNavigation');
 
