@@ -115,4 +115,23 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
+  formContainer: {
+    flex: 1,
+  },
+  formTitle: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: colors.black,
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  inputContainer: {
+    gap: 16,
+    marginBottom: 32,
+  },
+
+  refferButton: {
+    position: 'absolute',
+    bottom: 0,
+  },
 });

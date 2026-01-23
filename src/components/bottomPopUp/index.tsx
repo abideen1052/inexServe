@@ -6,13 +6,20 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   ActivityIndicator,
+  Keyboard,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { styles } from './styles';
 import { ServiceItem } from '../listItem';
 import { images } from '../../themes/images';
 import colors from '../../themes/colors';
-import { addRequestedService } from '../../utils/asyncStore';
+import {
+  addRequestedService,
+  addReferredService,
+} from '../../utils/asyncStore';
+import CustomButton from '../customButton';
+import InputField from '../inputField';
+import { NameValid, EmailValid } from '../../utils/validations';
 
 interface Props {
   isVisible: boolean;
@@ -23,13 +30,21 @@ interface Props {
 const BottomPopUp = ({ isVisible, onClose, item }: Props) => {
   const [imageLoading, setImageLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [isReferring, setIsReferring] = useState(false);
+  const [referName, setReferName] = useState('');
+  const [referEmail, setReferEmail] = useState('');
+  const [nameError, setNameError] = useState('');
+  const [emailError, setEmailError] = useState('');
 
   useEffect(() => {
     if (item?.id) {
       setHasError(false);
       setImageLoading(false);
+      setIsReferring(false);
+      setReferName('');
+      setReferEmail('');
     }
-  }, [item?.id]);
+  }, [item?.id, isVisible]);
 
   if (!item) return null;
 
@@ -39,7 +54,28 @@ const BottomPopUp = ({ isVisible, onClose, item }: Props) => {
       onClose();
     }
   };
-  const handleReffer = () => {};
+
+  const handleReffer = () => {
+    setIsReferring(true);
+  };
+
+  const handleReferSubmit = async () => {
+    const nameValidation = NameValid(referName);
+    const emailValidation = EmailValid(referEmail);
+    if (nameValidation || emailValidation) {
+      setNameError(nameValidation || '');
+      setEmailError(emailValidation || '');
+      return;
+    }
+    setNameError('');
+    setEmailError('');
+    await addReferredService({
+      ...item,
+      referredName: referName,
+      referredEmail: referEmail,
+    });
+    onClose();
+  };
 
   return (
     <Modal
@@ -54,58 +90,98 @@ const BottomPopUp = ({ isVisible, onClose, item }: Props) => {
             <View style={styles.modalContainer}>
               <View style={styles.dragHandle} />
 
-              <View style={styles.imageContainer}>
-                <FastImage
-                  source={
-                    item.imageUrl && !hasError
-                      ? {
-                          uri: item.imageUrl,
-                          priority: FastImage.priority.normal,
-                          cache: FastImage.cacheControl.immutable,
-                        }
-                      : images.placeholder
-                  }
-                  style={styles.image}
-                  resizeMode={FastImage.resizeMode.cover}
-                  onLoadStart={() => setImageLoading(true)}
-                  onLoadEnd={() => setImageLoading(false)}
-                  onError={() => {
-                    setHasError(true);
-                    setImageLoading(false);
-                  }}
-                />
-                {imageLoading && (
-                  <View style={styles.loaderContainer}>
-                    <ActivityIndicator size="small" color={colors.primary} />
+              {isReferring ? (
+                <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                  <View style={styles.formContainer}>
+                    <Text style={styles.formTitle}>Enter the details</Text>
+                    <View style={styles.inputContainer}>
+                      <InputField
+                        placeholder="Name"
+                        value={referName}
+                        onChangeText={text => {
+                          setReferName(text);
+                          if (nameError) setNameError('');
+                        }}
+                        error={nameError}
+                      />
+                      <InputField
+                        placeholder="Email"
+                        keyboardType="email-address"
+                        value={referEmail}
+                        onChangeText={text => {
+                          setReferEmail(text);
+                          if (emailError) setEmailError('');
+                        }}
+                        autoCapitalize="none"
+                        error={emailError}
+                      />
+                    </View>
+                    <CustomButton
+                      title="Submit"
+                      onPress={handleReferSubmit}
+                      style={styles.refferButton}
+                    />
                   </View>
-                )}
-              </View>
+                </TouchableWithoutFeedback>
+              ) : (
+                <>
+                  <View style={styles.imageContainer}>
+                    <FastImage
+                      source={
+                        item.imageUrl && !hasError
+                          ? {
+                              uri: item.imageUrl,
+                              priority: FastImage.priority.normal,
+                              cache: FastImage.cacheControl.immutable,
+                            }
+                          : images.placeholder
+                      }
+                      style={styles.image}
+                      resizeMode={FastImage.resizeMode.cover}
+                      onLoadStart={() => setImageLoading(true)}
+                      onLoadEnd={() => setImageLoading(false)}
+                      onError={() => {
+                        setHasError(true);
+                        setImageLoading(false);
+                      }}
+                    />
+                    {imageLoading && (
+                      <View style={styles.loaderContainer}>
+                        <ActivityIndicator
+                          size="small"
+                          color={colors.primary}
+                        />
+                      </View>
+                    )}
+                  </View>
 
-              <Text style={styles.name}>{item.name}</Text>
+                  <Text style={styles.name}>{item.name}</Text>
 
-              <View style={styles.priceContainer}>
-                <Text style={styles.currency}>$</Text>
-                <Text style={styles.price}>{item.price}</Text>
-                <Text style={styles.duration}> / {item.duration}</Text>
-              </View>
+                  <View style={styles.priceContainer}>
+                    <Text style={styles.currency}>$</Text>
+                    <Text style={styles.price}>{item.price}</Text>
+                    <Text style={styles.duration}> / {item.duration}</Text>
+                  </View>
 
-              <Text style={styles.description}>{item.description}</Text>
+                  <Text style={styles.description}>{item.description}</Text>
 
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                  style={[styles.button, styles.requestButton]}
-                  onPress={handleRequest}
-                >
-                  <Text style={styles.requestButtonText}>Request</Text>
-                </TouchableOpacity>
+                  <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                      style={[styles.button, styles.requestButton]}
+                      onPress={handleRequest}
+                    >
+                      <Text style={styles.requestButtonText}>Request</Text>
+                    </TouchableOpacity>
 
-                <TouchableOpacity
-                  style={[styles.button, styles.referButton]}
-                  onPress={handleReffer}
-                >
-                  <Text style={styles.referButtonText}>Refer</Text>
-                </TouchableOpacity>
-              </View>
+                    <TouchableOpacity
+                      style={[styles.button, styles.referButton]}
+                      onPress={handleReffer}
+                    >
+                      <Text style={styles.referButtonText}>Refer</Text>
+                    </TouchableOpacity>
+                  </View>
+                </>
+              )}
             </View>
           </TouchableWithoutFeedback>
         </View>

@@ -16,6 +16,7 @@ import { RequestedService } from '../../types/requestedService';
 import ListItem from '../../components/listItem';
 import colors from '../../themes/colors';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import EmptyState from '../../components/emptyState';
 
 const RequestedServiceScreen = () => {
   const insets = useSafeAreaInsets();
@@ -65,7 +66,12 @@ const RequestedServiceScreen = () => {
           keyExtractor={item => item.id}
           contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
-          ListEmptyComponent={null}
+          ListEmptyComponent={
+            <EmptyState
+              title="No Requested Services"
+              description="You haven't requested any services yet. Explore our services and make your first request!"
+            />
+          }
         />
       )}
     </View>

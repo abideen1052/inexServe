@@ -25,6 +25,7 @@ const USERS_KEY = 'REGISTERED_USERS';
 import { User } from '../types/userType';
 import { LoggedInUser } from '../types/loggedInUser';
 import { RequestedService } from '../types/requestedService';
+import { ReferredService } from '../types/referredService';
 
 export const saveRegisteredUser = async (user: User): Promise<void> => {
   try {
@@ -128,5 +129,53 @@ export const removeRequestedService = async (
     );
   } catch (error) {
     console.log('removeRequestedServiceError', error);
+  }
+};
+const REFERRED_SERVICES_KEY = 'REFERRED_SERVICES';
+
+export const addReferredService = async (
+  service: ReferredService,
+): Promise<void> => {
+  try {
+    const stored = await AsyncStorage.getItem(REFERRED_SERVICES_KEY);
+    const services: ReferredService[] = stored ? JSON.parse(stored) : [];
+
+    const referralId =
+      Date.now().toString() + Math.random().toString(36).substring(7);
+    services.push({ ...service, referralId });
+
+    await AsyncStorage.setItem(REFERRED_SERVICES_KEY, JSON.stringify(services));
+  } catch (error) {
+    console.log('addReferredServiceError', error);
+  }
+};
+
+export const getReferredServices = async (): Promise<ReferredService[]> => {
+  try {
+    const stored = await AsyncStorage.getItem(REFERRED_SERVICES_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch (error) {
+    console.log('getReferredServicesError', error);
+    return [];
+  }
+};
+
+export const removeReferredService = async (
+  serviceId: string,
+): Promise<void> => {
+  try {
+    const stored = await AsyncStorage.getItem(REFERRED_SERVICES_KEY);
+    const services: ReferredService[] = stored ? JSON.parse(stored) : [];
+
+    const updatedServices = services.filter(
+      item => item.referralId !== serviceId,
+    );
+
+    await AsyncStorage.setItem(
+      REFERRED_SERVICES_KEY,
+      JSON.stringify(updatedServices),
+    );
+  } catch (error) {
+    console.log('removeReferredServiceError', error);
   }
 };
