@@ -4,19 +4,27 @@ import { styles } from './styles';
 import { servicesData } from '../../utils/data';
 import ListItem, { ServiceItem } from '../../components/listItem';
 import SearchField from '../../components/searchField';
+import BottomPopUp from '../../components/bottomPopUp';
 import colors from '../../themes/colors';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const ServiceListScreen = () => {
   const insets = useSafeAreaInsets();
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedItem, setSelectedItem] = useState<ServiceItem | null>(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const filteredData = servicesData.filter(item =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
+  const handleItemPress = (item: ServiceItem) => {
+    setSelectedItem(item);
+    setIsModalVisible(true);
+  };
+
   const renderItem = ({ item }: { item: ServiceItem }) => {
-    return <ListItem item={item} />;
+    return <ListItem item={item} onPress={() => handleItemPress(item)} />;
   };
 
   return (
@@ -34,6 +42,11 @@ const ServiceListScreen = () => {
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
         style={styles.list}
+      />
+      <BottomPopUp
+        isVisible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        item={selectedItem}
       />
     </View>
   );

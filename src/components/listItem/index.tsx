@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { styles } from './styles';
 import { images } from '../../themes/images';
@@ -19,14 +19,20 @@ export interface ServiceItem {
 
 interface Props {
   item: ServiceItem;
+  onPress?: () => void;
+  onRemove?: () => void;
 }
 
-const ListItem = ({ item }: Props) => {
+const ListItem = ({ item, onPress, onRemove }: Props) => {
   const [imageLoading, setImageLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={onPress}
+      activeOpacity={0.7}
+    >
       <View style={styles.image}>
         <FastImage
           style={styles.image}
@@ -72,15 +78,28 @@ const ListItem = ({ item }: Props) => {
           <Text style={styles.price}>{item.price}</Text>
           <Text style={styles.duration}> / {item.duration}</Text>
         </View>
-        <Text
-          style={
-            item.isAvailable ? styles.statusAvailable : styles.statusUnavailable
-          }
-        >
-          {item.isAvailable ? 'Available' : 'Unavailable'}
-        </Text>
+        <View style={styles.statusRow}>
+          {/* <Text
+            style={
+              item.isAvailable
+                ? styles.statusAvailable
+                : styles.statusUnavailable
+            }
+          >
+            {item.isAvailable ? 'Available' : 'Unavailable'}
+          </Text> */}
+          {onRemove && (
+            <TouchableOpacity
+              style={styles.removeButton}
+              onPress={onRemove}
+              activeOpacity={0.6}
+            >
+              <Text style={styles.removeButtonText}>Remove</Text>
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

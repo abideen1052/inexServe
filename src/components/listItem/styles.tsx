@@ -83,6 +83,10 @@ export const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '500',
   },
+  statusRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   image: {
     width: '100%',
     height: 150,
@@ -91,9 +95,21 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.lightGrey,
   },
   loaderContainer: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: colors.lightGrey,
+  },
+  removeButton: {
+    backgroundColor: colors.red,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 6,
+    marginLeft: 10,
+  },
+  removeButtonText: {
+    color: colors.white,
+    fontSize: 12,
+    fontWeight: 'bold',
   },
 });

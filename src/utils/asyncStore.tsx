@@ -24,6 +24,7 @@ const USERS_KEY = 'REGISTERED_USERS';
 
 import { User } from '../types/userType';
 import { LoggedInUser } from '../types/loggedInUser';
+import { RequestedService } from '../types/requestedService';
 
 export const saveRegisteredUser = async (user: User): Promise<void> => {
   try {
@@ -74,5 +75,58 @@ export const clearLoggedInUser = async (): Promise<void> => {
     await AsyncStorage.removeItem(CURRENT_USER_KEY);
   } catch (error) {
     console.log('clearLoggedInUserError', error);
+  }
+};
+
+const REQUESTED_SERVICES_KEY = 'REQUESTED_SERVICES';
+
+export const addRequestedService = async (
+  service: RequestedService,
+): Promise<void> => {
+  try {
+    const stored = await AsyncStorage.getItem(REQUESTED_SERVICES_KEY);
+    const services: RequestedService[] = stored ? JSON.parse(stored) : [];
+
+    // ❗ Prevent duplicate requests
+    const alreadyExists = services.some(item => item.id === service.id);
+
+    if (!alreadyExists) {
+      services.push(service);
+
+      await AsyncStorage.setItem(
+        REQUESTED_SERVICES_KEY,
+        JSON.stringify(services),
+      );
+    }
+  } catch (error) {
+    console.log('addRequestedServiceError', error);
+  }
+};
+
+export const getRequestedServices = async (): Promise<RequestedService[]> => {
+  try {
+    const stored = await AsyncStorage.getItem(REQUESTED_SERVICES_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch (error) {
+    console.log('getRequestedServicesError', error);
+    return [];
+  }
+};
+
+export const removeRequestedService = async (
+  serviceId: string,
+): Promise<void> => {
+  try {
+    const stored = await AsyncStorage.getItem(REQUESTED_SERVICES_KEY);
+    const services: RequestedService[] = stored ? JSON.parse(stored) : [];
+
+    const updatedServices = services.filter(item => item.id !== serviceId);
+
+    await AsyncStorage.setItem(
+      REQUESTED_SERVICES_KEY,
+      JSON.stringify(updatedServices),
+    );
+  } catch (error) {
+    console.log('removeRequestedServiceError', error);
   }
 };
