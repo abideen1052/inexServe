@@ -4,7 +4,7 @@ import React from 'react';
 const SmartHeroGalleryScreen = () => {
   return (
     <View>
-      <Text>SmartHeroGalleryScreen</Text>
+      <Text>SmartHeroGalleeen</Text>
     </View>
   );
 };
